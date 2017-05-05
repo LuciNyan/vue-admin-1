@@ -9,6 +9,7 @@ export default {
    */
   bootstrap() {
     let mock = new MockAdapter(axios);
+    mock.restore()
 
     // mock success request
     mock.onGet('/success').reply(200, {
