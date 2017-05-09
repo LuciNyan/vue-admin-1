@@ -22,7 +22,7 @@ export default {
     });
 
     //登录
-    mock.onPost('/login').reply(config => {
+    mock.onPost('/api/login/android').reply(config => {
       let {username, password} = JSON.parse(config.data);
       return new Promise((resolve, reject) => {
         let user = null;
@@ -36,7 +36,10 @@ export default {
           });
 
           if (hasUser) {
-            resolve([200, { code: 200, msg: '请求成功', user }]);
+            resolve([
+              200,
+              { code: 200, msg: '请求成功', data: {'access_token': '11332'} }
+            ]);
           } else {
             resolve([200, { code: 500, msg: '账号或密码错误' }]);
           }
@@ -61,19 +64,21 @@ export default {
     });
 
     //获取用户列表（分页）
-    mock.onGet('/user/listpage').reply(config => {
+    mock.onGet('/api/queryCustomerVisitRecordsAll').reply(config => {
       let {page, name} = config.params;
       let mockUsers = _Users.filter(user => {
         if (name && user.name.indexOf(name) == -1) return false;
         return true;
       });
       let total = mockUsers.length;
-      mockUsers = mockUsers.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
+      mockUsers = mockUsers.filter((u, index) => index < 10 * page && index >= 10 * (page - 1));
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve([200, {
-            total: total,
-            users: mockUsers
+            data: {
+              total: total,
+              data: mockUsers
+            }
           }]);
         }, 1000);
       });
@@ -148,6 +153,26 @@ export default {
             msg: '新增成功'
           }]);
         }, 500);
+      });
+    });
+
+    // ----new----
+    //获取促成列表（分页）
+    mock.onGet('/customer/facilitateList').reply(config => {
+      let {page, name} = config.params;
+      let mockUsers = _Users.filter(user => {
+        if (name && user.name.indexOf(name) == -1) return false;
+        return true;
+      });
+      let total = mockUsers.length;
+      mockUsers = mockUsers.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            users: mockUsers
+          }]);
+        }, 1000);
       });
     });
 

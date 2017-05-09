@@ -25,11 +25,12 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  //NProgress.start();
-  if (to.path == '/login') {
-    sessionStorage.removeItem('user');
+  // 跳转到登录页面时，删除token
+  if (to.path === '/login') {
+    store.commit('token', '')
+    sessionStorage.removeItem('token');
   }
-  let user = JSON.parse(sessionStorage.getItem('user'));
+  let user = JSON.parse(sessionStorage.getItem('token'))
   if (!user && to.path != '/login') {
     next({ path: '/login' })
   } else {

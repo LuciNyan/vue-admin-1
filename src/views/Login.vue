@@ -9,65 +9,70 @@
     </el-form-item>
     <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
-      <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
+      <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="loginLoading">登录</el-button>
       <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
     </el-form-item>
   </el-form>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   import { requestLogin } from '../api/api';
   //import NProgress from 'nprogress'
   export default {
+    computed: {
+      ...mapGetters({
+        loginLoading: 'getLoginLoading',
+        token: 'getToken',
+        message: 'getLoginMsg'
+      })
+    },
+    watch: {
+      token: function (newValue) {
+        if (newValue !== '') {
+          console.log(newValue)
+          this.$router.push({ path: '/facilitate' })
+        }
+      },
+      message: function () {
+        this.$message({
+          message: '账号密码错误',
+          type: 'error'
+        })
+        // 重置提示msg
+        this.$store.dispatch('resetLoginMsg')
+      }
+    },
     data() {
       return {
-        logining: false,
         ruleForm2: {
-          account: 'admin',
-          checkPass: '123456'
+          account: '15527272727',
+          checkPass: 'a123123'
         },
         rules2: {
           account: [
             { required: true, message: '请输入账号', trigger: 'blur' },
-            //{ validator: validaePass }
           ],
           checkPass: [
             { required: true, message: '请输入密码', trigger: 'blur' },
-            //{ validator: validaePass2 }
           ]
         },
         checked: true
       };
     },
     methods: {
-      handleReset2() {
-        this.$refs.ruleForm2.resetFields();
-      },
-      handleSubmit2(ev) {
-        var _this = this;
+//      handleReset2() {
+//        this.$refs.ruleForm2.resetFields();
+//      },
+      handleSubmit2 (ev) {
         this.$refs.ruleForm2.validate((valid) => {
           if (valid) {
-            //_this.$router.replace('/table');
-            this.logining = true;
-            //NProgress.start();
             var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
-            requestLogin(loginParams).then(re_data => {
-              this.logining = false;
-              //NProgress.done();
-              let { msg, code, data } = re_data;
-              if (code !== 200) {
-                this.$message({
-                  message: msg,
-                  type: 'error'
-                });
-              } else {
-                sessionStorage.setItem('user', JSON.stringify(data))
-                this.$router.push({ path: '/table' })
-              }
-            });
+            this.$store.dispatch('login', loginParams)
           } else {
-            console.log('error submit!!');
-            return false;
+            console.log('error submit!!')
+            return false
           }
         });
       }
