@@ -75,7 +75,7 @@
 	export default {
 		data() {
 			return {
-				sysName:'VUEADMIN',
+				sysName:'新纪元',
 				collapsed:false,
 				sysUserName: '',
 				sysUserAvatar: '',
@@ -138,7 +138,7 @@
 
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss" rel="stylesheet/scss">
 	@import '~scss_vars';
 	
 	.container {
@@ -151,6 +151,7 @@
 			line-height: 60px;
 			background: $color-primary;
 			color:#fff;
+			font-family: "Hiragino Sans GB";
 			.userinfo {
 				text-align: right;
 				padding-right: 35px;

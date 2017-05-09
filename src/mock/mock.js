@@ -4,23 +4,19 @@ import { LoginUsers, Users } from './data/user';
 let _Users = Users;
 
 export default {
-  /**
-   * mock bootstrap
-   */
+
   bootstrap() {
     let mock = new MockAdapter(axios);
+    // 开关mock 测试
     mock.restore()
 
-    // mock success request
     mock.onGet('/success').reply(200, {
       msg: 'success'
     });
 
-    // mock error request
     mock.onGet('/error').reply(500, {
       msg: 'failure'
     });
-
     //登录
     mock.onPost('/api/login/android').reply(config => {
       let {username, password} = JSON.parse(config.data);
@@ -34,7 +30,6 @@ export default {
               return true;
             }
           });
-
           if (hasUser) {
             resolve([
               200,
@@ -65,9 +60,9 @@ export default {
 
     //获取用户列表（分页）
     mock.onGet('/api/queryCustomerVisitRecordsAll').reply(config => {
-      let {page, name} = config.params;
+      let {page, mobile} = config.params;
       let mockUsers = _Users.filter(user => {
-        if (name && user.name.indexOf(name) == -1) return false;
+        if (mobile && user.mobile.indexOf(mobile) == -1) return false;
         return true;
       });
       let total = mockUsers.length;

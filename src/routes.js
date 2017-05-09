@@ -27,26 +27,27 @@ let routes = [
     },
     //{ path: '/main', component: Main },
   {
-        path: '/',
-        component: Home,
-        name: '促成',
-        iconCls: 'el-icon-message',//图标样式class
-        children: [
-              { path: '/facilitate', component: Facilitate, name: '促成列表' }
-        ]
+    path: '/',
+    component: Home,
+    name: ' 我的客户',
+    iconCls: 'fa fa-user-circle ',//图标样式class
+    children: [
+      { path: '/main', component: Main, name: '主页', hidden: true },
+      { path: '/table', component: Table, name: 'Table' },
+      { path: '/form', component: Form, name: 'Form' },
+      { path: '/user', component: user, name: '列表' },
+    ]
   },
   {
-        path: '/',
-        component: Home,
-        name: '导航一',
-        iconCls: 'el-icon-message',//图标样式class
-        children: [
-              { path: '/main', component: Main, name: '主页', hidden: true },
-              { path: '/table', component: Table, name: 'Table' },
-            { path: '/form', component: Form, name: 'Form' },
-            { path: '/user', component: user, name: '列表' },
-        ]
-    },
+    path: '/',
+    component: Home,
+    name: '回访记录',
+    iconCls: 'fa fa-handshake-o',//图标样式class
+    leaf: true,//只有一个节点
+    children: [
+              { path: '/facilitate', component: Facilitate, name: '回访记录' }
+    ]
+  },
     {
         path: '/',
         component: Home,

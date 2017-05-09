@@ -27,12 +27,17 @@ export default {
 
   // -----------------------促成与回访记录------------------------
   // ----获取促成回访列表----
-  getFacilitateList (context, para) {
-    // 开启loading
+  getFacilitateList (context, para = false) {
     context.commit('facilitateListLoading', true)
+    if (para === false) {
+      para = {
+        page: 1,
+        mobile: ''
+      }
+    }
+    // 异步
     getUserListPage(para).then((res) => {
       let res_data = res.data.data
-      console.log(res_data)
       context.commit('facilitateListTotal', res_data.total)
       context.commit('facilitateList', res_data.data)
       context.commit('facilitateListLoading', false)

@@ -31,7 +31,6 @@
     watch: {
       token: function (newValue) {
         if (newValue !== '') {
-          console.log(newValue)
           this.$router.push({ path: '/facilitate' })
         }
       },
