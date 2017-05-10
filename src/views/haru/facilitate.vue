@@ -137,7 +137,7 @@
 
   import { mapGetters } from 'vuex'
 
-  import VList from '../../components/Test'
+  import VList from '../../components/followUpList'
 
   export default {
     components: {

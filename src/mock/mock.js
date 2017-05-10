@@ -8,7 +8,7 @@ export default {
   bootstrap() {
     let mock = new MockAdapter(axios);
     // 开关mock 测试
-    mock.restore()
+    // mock.restore()
 
     mock.onGet('/success').reply(200, {
       msg: 'success'
