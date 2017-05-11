@@ -13,7 +13,12 @@
         </el-form-item>
       </el-form>
     </el-col>
-    <el-table :data="users" style="width: 100%" stripe v-loading="listLoading">
+    <el-table
+      :data="users"
+      style="width: 100%"
+      stripe v-loading="listLoading"
+      @selection-change="selectChange"
+      element-loading-text="拼命加载中">
       <el-table-column type="selection" width="45">
       </el-table-column>
       <el-table-column type="expand">
@@ -22,45 +27,43 @@
             <el-form-item label="编号">
               <span>{{ props.row.id }}</span>
             </el-form-item>
+            <el-form-item label="姓名" >
+              <span>{{ props.row.name }}</span>
+            </el-form-item>
             <el-form-item label="用户名" min-width="500" >
               <span>{{ props.row.username }}</span>
+            </el-form-item>
+            <el-form-item label="来源">
+              <span>{{ props.row.source }}</span>
             </el-form-item>
             <el-form-item label="手机号" min-width="500" >
               <span>{{ props.row.mobile }}</span>
             </el-form-item>
-            <el-form-item label="姓名" >
-              <span>{{ props.row.name }}</span>
+            <el-form-item label="余额">
+              <span>{{ props.row.balance }}</span>
             </el-form-item>
             <el-form-item label="邀请人">
               <span>{{ props.row.inviter }}</span>
             </el-form-item>
-            <el-form-item label="注册日期">
-              <span>{{ props.row.reg_date }}</span>
+            <el-form-item label="冻结">
+              <span>{{ props.row.frozen }}</span>
             </el-form-item>
-            <el-form-item label="余额">
-              <span>{{ props.row.balance }}</span>
+            <el-form-item label="开户地">
+              <span>{{ props.row.open_area }}</span>
             </el-form-item>
-            <el-form-item label="投资金额">
-              <span>{{ props.row.invest_money }}</span>
+            <el-form-item label="待收">
+              <span>{{ props.row.total_received }}</span>
             </el-form-item>
-            <el-form-item label="投资日期">
-              <span>{{ props.row.invest_date }}</span>
-            </el-form-item>
-            <el-form-item label="期限">
-              <span>{{ props.row.deadline }}</span>
-            </el-form-item>
-            <el-form-item label="标的名称">
-              <span>{{ props.row.loan_name }}</span>
-            </el-form-item>
-            <el-form-item label="回访日期">
-              <span>{{ props.row.follow_up_date }}</span>
+            <el-form-item label="注册时间">
+              <span>{{ props.row.register_time }}</span>
             </el-form-item>
             <el-form-item label="归属">
-              <span>{{ props.row.attributable }}</span>
+              <span>{{ props.row.belong }}</span>
             </el-form-item>
-            <el-form-item label="通话时长">
-              <span>{{ props.row.call_duration }}</span>
+            <el-form-item label="上次登录">
+              <span>{{ props.row.last_login_time }}</span>
             </el-form-item>
+
           </el-form>
         </template>
       </el-table-column>
@@ -68,33 +71,27 @@
       </el-table-column>
       <el-table-column label="手机号" prop="mobile" min-width="150">
       </el-table-column>
-      <el-table-column label="姓名" prop="name" min-width="100">
+      <el-table-column label="姓名" prop="name" width="100">
       </el-table-column>
-      <el-table-column label="回访日期" prop="followUpDate" sortable width="150">
+      <el-table-column label="来源" prop="source" width="150">
       </el-table-column>
-      <el-table-column label="回访记录" width="180">
+      <el-table-column label="注册时间" prop="register_time" sortable width="150">
+      </el-table-column>
+      <el-table-column label="归属" prop="belong" sortable width="100">
+      </el-table-column>
+      <el-table-column label="操作" width="100">
         <template scope="scope">
-          <el-popover trigger="focus" placement="top" width="300">
-            <div >回访记录：{{ scope.row.follow_up_content }}</div>
-            <div slot="reference" class="name-wrapper">
-              <el-tag>查看记录</el-tag>
-            </div>
-          </el-popover>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="150">
-        <template scope="scope">
-          <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+          <el-button size="small" @click="addSelectList(scope.row.id)" :plain="true" type="info">添加</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!--工具条-->
     <el-col :span="24" class="toolbar">
-      <!--<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>-->
+      <el-button type="info" @click="bulkAddSelectList" :disabled="this.select.length===0">批量添加</el-button>
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
+    <VSelectList></VSelectList>
   </div>
 </template>
 
@@ -114,42 +111,57 @@
 </style>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions} from 'vuex'
+  import VSelectList from './SelectList'
 
   export default {
+    components: {
+      VSelectList
+    },
     data () {
       return {
         filters: {
           mobile: ''
         },
+        select: [],//列表选中列
       }
     },
     computed: {
       ...mapGetters({
-        users: 'getFacilitateList',
-        listLoading: 'getFacilitateListLoading',
-        total: 'getFacilitateListTotal'
+        users: 'getAllCustomerList',
+        listLoading: 'getAllCustomerListLoading',
+        total: 'getAllCustomerListTotal'
       })
     },
     methods: {
+      ...mapActions({
+        addSelectList: 'addSelectList'
+      }),
       //获取用户列表
       getUsers () {
         let para = {
           page: 1,
           mobile: this.filters.mobile
         }
-        this.$store.dispatch('getFacilitateList', para)
+        this.$store.dispatch('getAllCustomerList', para)
       },
-      handleCurrentChange(val) {
+      handleCurrentChange (val) {
         let para = {
           page: val,
           mobile: this.filters.mobile
         }
-        this.$store.dispatch('getFacilitateList', para)
+        this.$store.dispatch('getAllCustomerList', para)
+      },
+      bulkAddSelectList () {
+        let ids = this.select.map(item => item.id)
+        this.$store.dispatch('addSelectList', ids)
+      },
+      selectChange (sels) {
+        this.select = sels
       },
     },
     created () {
-      this.$store.dispatch('getFacilitateList')
+      this.$store.dispatch('getAllCustomerList')
     }
   }
 </script>

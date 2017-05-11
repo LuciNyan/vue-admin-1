@@ -9,8 +9,8 @@ import Page5 from './views/nav2/Page5.vue'
 import Page6 from './views/nav3/Page6.vue'
 import echarts from './views/charts/echarts.vue'
 
-import Facilitate from './components/followUpList.vue'
-import Customer from './components/customerList.vue'
+import Facilitate from './components/FollowUpList.vue'
+import Customer from './components/customer/CustomerList.vue'
 
 let routes = [
     {

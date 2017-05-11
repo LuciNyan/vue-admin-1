@@ -56,7 +56,7 @@
             <span>{{ props.row.follow_up_date }}</span>
           </el-form-item>
           <el-form-item label="归属">
-            <span>{{ props.row.attributable }}</span>
+            <span>{{ props.row.belong }}</span>
           </el-form-item>
           <el-form-item label="通话时长">
             <span>{{ props.row.call_duration }}</span>

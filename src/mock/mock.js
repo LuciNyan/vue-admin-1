@@ -8,7 +8,7 @@ export default {
   bootstrap() {
     let mock = new MockAdapter(axios);
     // 开关mock 测试
-    // mock.restore()
+    mock.restore()
 
     mock.onGet('/success').reply(200, {
       msg: 'success'
@@ -60,6 +60,27 @@ export default {
 
     //获取用户列表（分页）
     mock.onGet('/api/queryCustomerVisitRecordsAll').reply(config => {
+      let {page, mobile} = config.params;
+      let mockUsers = _Users.filter(user => {
+        if (mobile && user.mobile.indexOf(mobile) == -1) return false;
+        return true;
+      });
+      let total = mockUsers.length;
+      mockUsers = mockUsers.filter((u, index) => index < 10 * page && index >= 10 * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            data: {
+              total: total,
+              data: mockUsers
+            }
+          }]);
+        }, 1000);
+      });
+    });
+
+    // 所有用户列表
+    mock.onGet('/api/queryCustomerAll').reply(config => {
       let {page, mobile} = config.params;
       let mockUsers = _Users.filter(user => {
         if (mobile && user.mobile.indexOf(mobile) == -1) return false;
