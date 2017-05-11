@@ -3,7 +3,6 @@ export default {
   admin: {
     loading: false,
     token: '',
-    msg: '',
   },
 
   // --------回访记录列表--------

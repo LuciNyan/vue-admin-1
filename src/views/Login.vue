@@ -25,7 +25,6 @@
       ...mapGetters({
         loginLoading: 'getLoginLoading',
         token: 'getToken',
-        message: 'getLoginMsg'
       })
     },
     watch: {
@@ -34,14 +33,6 @@
           this.$router.push({ path: '/facilitate' })
         }
       },
-      message: function () {
-        this.$message({
-          message: '账号密码错误',
-          type: 'error'
-        })
-        // 重置提示msg
-        this.$store.dispatch('resetLoginMsg')
-      }
     },
     data() {
       return {

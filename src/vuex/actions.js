@@ -18,15 +18,20 @@ export default {
     context.commit('loginLoading', true)
     // 开始登录请求
     requestLogin(params).then(re_data => {
+      let type = 'error'
       let { msg, code, data } = re_data;
-      if (code !== 200) {
-        context.commit('loginMsg', msg)
-      } else {
+      if (code === 200) {
+        type = 'success'
         sessionStorage.setItem('token', JSON.stringify(data.access_token))
         context.commit('token', data.access_token)
       }
       // 取消登录loading
       context.commit('loginLoading', false)
+      Message({
+        showClose: true,
+        message: msg,
+        type: type
+      });
     })
   },
   // ----登出----

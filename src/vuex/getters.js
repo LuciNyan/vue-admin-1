@@ -6,9 +6,6 @@ export default {
   getLoginLoading (state) {
     return state.admin.loading
   },
-  getLoginMsg (state) {
-    return state.admin.msg
-  },
 
 
   // --------回访--------
