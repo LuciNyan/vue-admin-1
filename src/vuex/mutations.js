@@ -52,6 +52,7 @@ export default {
   customerAllListPage (state, page) {
     state.customer.allList.page = page
   },
+
   // 添加 到待分发列表
   customerSelectListPush (state, userId) {
     const user = state.customer.allList.data.find(user => {

@@ -67,17 +67,19 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="用户名" prop="username" min-width="120">
+      <el-table-column label="用户名" prop="username" min-width="100">
       </el-table-column>
-      <el-table-column label="手机号" prop="mobile" min-width="150">
+      <el-table-column label="手机号" prop="mobile" min-width="110">
       </el-table-column>
       <el-table-column label="姓名" prop="name" width="100">
       </el-table-column>
-      <el-table-column label="来源" prop="source" width="150">
+      <el-table-column label="余额" prop="balance" min-width="100">
+      </el-table-column>
+      <el-table-column label="来源" prop="source" width="80">
       </el-table-column>
       <el-table-column label="注册时间" prop="register_time" sortable width="150">
       </el-table-column>
-      <el-table-column label="归属" prop="belong" sortable width="100">
+      <el-table-column label="归属" prop="belong" width="100">
       </el-table-column>
       <el-table-column label="操作" width="100" v-if="role === 'CSM'">
         <template scope="scope">
