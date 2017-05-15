@@ -15,7 +15,7 @@ export const editUser = params => { return axios.get(`${base}/user/edit`, { para
 export const addUser = params => { return axios.get(`${base}/user/add`, { params: params }); };
 
 // -----------new-----------
-export const getALLCustomerListPage = params => { return axios.get(`${base}/queryCustomerAll`, { params: params }); };
+export const getALLCustomerListPage = params => { return axios.get(`${base}/queryCustomer`, { params: params }).then(res => res.data) }
 export const getUserListPage = params => { return axios.get(`${base}/queryCustomerVisitRecordsAll`, { params: params }).then(res => res.data) };
 export const createCustomer = params => { return axios.post(`${base}/createCustomer`, params).then(res => res.data) }
 export const getAllWaiter = () => { return axios.get(`${base}/queryCustomerService`).then(res => res.data) }

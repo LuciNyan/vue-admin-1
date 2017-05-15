@@ -25,17 +25,32 @@ export default {
   },
 
   // --------客户--------
-  customerAllList (state, users) {
-    state.customer.allList.data = users
+  customerList (state, para) {
+    let { type, users } = para
+    if (type === 'all') {
+      state.customer.allList.data = users
+    } else {
+      state.customer.myList.data = users
+    }
+  },
+  customerListLoading (state, para) {
+    let { type, bool } = para
+    if (type === 'all') {
+      state.customer.allList.loading = bool
+    } else {
+      state.customer.myList.loading = bool
+    }
+  },
+  customerListTotal (state, para) {
+    let { type, total } = para
+    if (type === 'all') {
+      state.customer.allList.total = total
+    } else {
+      state.customer.myList.total = total
+    }
   },
   customerAllListPage (state, page) {
     state.customer.allList.page = page
-  },
-  customerAllListLoading (state, bool) {
-    state.customer.allList.loading = bool
-  },
-  customerAllListTotal (state, total) {
-    state.customer.allList.total = total
   },
   // 添加 到待分发列表
   customerSelectListPush (state, userId) {
@@ -46,7 +61,6 @@ export default {
   },
   // 从待分发列表 删除
   customerSelectListSplice (state, userId) {
-    console.log(userId)
     const user = state.customer.selectList.data.find(user => {
       return user.id === userId
     })
@@ -58,7 +72,7 @@ export default {
 
   // --------客服--------
   waiterAllList (state, waiter) {
-    state.waiter.list = waiter
+    state.customerService.list = waiter
   }
 
 

@@ -79,19 +79,17 @@
       </el-table-column>
       <el-table-column label="归属" prop="belong" sortable width="100">
       </el-table-column>
-      <el-table-column label="操作" width="100" v-if="role === 'CSM'">
-        <template scope="scope">
-          <el-button size="small" @click="addSelectList(scope.row.id)" :plain="true" type="info">添加</el-button>
-        </template>
-      </el-table-column>
+        <el-table-column label="操作" width="100" v-if="role === 'CSM'">
+          <template scope="scope">
+            <el-button size="small" @click="addSelectList(scope.row.id)" :plain="true" type="info">添加</el-button>
+          </template>
+        </el-table-column>
     </el-table>
     <!--工具条-->
     <el-col :span="24" class="toolbar">
-      <el-button type="info" @click="bulkAddSelectList" :disabled="this.select.length===0" v-if="role === 'CSM'">批量添加</el-button>
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
-    <VSelectList v-if="role === 'CSM'"></VSelectList>
   </div>
 </template>
 
@@ -109,7 +107,7 @@
     width: 50%;
   }
   .breadcrumb-container {
-  //margin-bottom: 15px;
+    //margin-bottom: 15px;
     .title {
       width: 200px;
       float: left;
@@ -151,9 +149,9 @@
     },
     computed: {
       ...mapGetters({
-        users: 'getAllCustomerList',
-        listLoading: 'getAllCustomerListLoading',
-        total: 'getAllCustomerListTotal',
+        users: 'getMyCustomerList',
+        listLoading: 'getMyCustomerListLoading',
+        total: 'getMyCustomerListTotal',
         role: 'getRole',
       })
     },
@@ -166,7 +164,7 @@
         let para = {
           page: 1,
           mobile: this.filters.mobile,
-          mode: 'all'
+          mode: 'mine'
         }
         this.$store.dispatch('getCustomerList', para)
       },
@@ -174,7 +172,7 @@
         let para = {
           page: val,
           mobile: this.filters.mobile,
-          mode: 'all'
+          mode: 'mine'
         }
         this.$store.dispatch('getCustomerList', para)
       },
@@ -190,7 +188,7 @@
       let para = {
         page: 1,
         mobile: '',
-        mode: 'all'
+        mode: 'mine'
       }
       this.$store.dispatch('getCustomerList', para)
     }

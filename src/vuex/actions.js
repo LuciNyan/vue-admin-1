@@ -63,22 +63,30 @@ export default {
   },
 
   // -----------------------客户列表------------------------
-  getAllCustomerList (context, para = false) {
-    context.commit('customerAllListLoading', true)
-    if (para === false) {
-      para = {
-        page : 1,
-        mobile: ''
-      }
-    }
+  getCustomerList (context, para) {
+    context.commit('customerListLoading', {
+      type: para.mode,
+      bool: true
+    })
     // 设置当前页数
-    context.commit('customerAllListPage', para.page)
+    if (para.mode === 'all') {
+      context.commit('customerAllListPage', para.page)
+    }
     // 异步
     getALLCustomerListPage(para).then((res) => {
-      let res_data = res.data.data
-      context.commit('customerAllListTotal', res_data.total)
-      context.commit('customerAllList', res_data.data)
-      context.commit('customerAllListLoading', false)
+      let res_data = res.data
+      context.commit('customerListTotal', {
+        type: para.mode,
+        total: res_data.total
+      })
+      context.commit('customerList', {
+        type: para.mode,
+        users: res_data.data
+      })
+      context.commit('customerListLoading', {
+        type: para.mode,
+        bool: false
+      })
     })
   },
   // 添加一条 或 批量添加
@@ -131,14 +139,29 @@ export default {
         // 重新刷新所有用户列表
         let param = {
           page: context.getters.getAllCustomerListPage,
-          mobile: ''
+          mobile: '',
+          mode: 'all'
         }
-        context.commit('customerAllListLoading', true)
+        context.commit('customerListLoading', {
+          type: 'all',
+          bool: true
+        })
         getALLCustomerListPage(param).then((res) => {
-          let res_data = res.data.data
-          context.commit('customerAllListTotal', res_data.total)
-          context.commit('customerAllList', res_data.data)
-          context.commit('customerAllListLoading', false)
+          let res_data = res.data
+          console.log(res_data)
+          context.commit('customerListTotal', {
+            type: 'all',
+            total: res_data.total
+          })
+          context.commit('customerList', {
+            type: 'all',
+            users: res_data.data
+          })
+          console.log(22)
+          context.commit('customerListLoading', {
+            type: 'all',
+            bool: false
+          })
         })
       }
     })

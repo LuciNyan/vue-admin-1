@@ -20,7 +20,9 @@
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.username }}</span>
             </el-option>
           </el-select>
-          <span>&nbsp;&nbsp;&nbsp;当前用户总余额：{{ balanceSum }}</span>
+          <transition name="slide-fade">
+          <span v-if="balanceSum != 0">&nbsp;&nbsp;&nbsp;当前用户总余额：{{ balanceSum }}</span>
+          </transition>
         </el-form-item>
       </el-form>
     </el-col>
@@ -105,7 +107,7 @@
   </div>
 </template>
 
-<style>
+<style scoped lang="scss" rel="stylesheet/scss">
   .demo-table-expand {
     font-size: 0;
   }
@@ -117,6 +119,18 @@
     margin-right: 0;
     margin-bottom: 0;
     width: 50%;
+  }
+  /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  .slide-fade-enter-active {
+    transition: all .9s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .9s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-active {
+    transform: translateX(10px);
+    opacity: 0;
   }
 </style>
 

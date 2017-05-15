@@ -10,21 +10,21 @@ import Page6 from './views/nav3/Page6.vue'
 import echarts from './views/charts/echarts.vue'
 
 import Facilitate from './components/FollowUpList.vue'
-import Customer from './components/customer/CustomerList.vue'
+import Customer from './components/customer/CustomerPage.vue'
 
 let routes = [
-    {
-        path: '/login',
-        component: Login,
-        name: '',
-        hidden: true
-    },
-    {
-        path: '/404',
-        component: NotFound,
-        name: '',
-        hidden: true
-    },
+  {
+    path: '/login',
+    component: Login,
+    name: '',
+    hidden: true
+  },
+  {
+    path: '/404',
+    component: NotFound,
+    name: '',
+    hidden: true
+  },
   {
     path: '/',
     component: Home,

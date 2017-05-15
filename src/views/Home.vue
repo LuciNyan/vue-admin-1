@@ -11,7 +11,8 @@
 			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
-					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
+					<span class="el-dropdown-link userinfo-inner">{{sysUserName}}</span>
+          <!--<img :src="this.sysUserAvatar" />-->
 					<el-dropdown-menu slot="dropdown">
 						<el-dropdown-item>我的消息</el-dropdown-item>
 						<el-dropdown-item>设置</el-dropdown-item>
@@ -52,14 +53,14 @@
 			</aside>
 			<section class="content-container">
 				<div class="grid-content bg-purple-light">
-					<el-col :span="24" class="breadcrumb-container">
-						<strong class="title">{{$route.name}}</strong>
-						<el-breadcrumb separator="/" class="breadcrumb-inner">
-							<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
-								{{ item.name }}
-							</el-breadcrumb-item>
-						</el-breadcrumb>
-					</el-col>
+					<!--<el-col :span="24" class="breadcrumb-container">-->
+						<!--<strong class="title">{{$route.name}}</strong>-->
+						<!--<el-breadcrumb separator="/" class="breadcrumb-inner">-->
+							<!--<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">-->
+								<!--{{ item.name }}-->
+							<!--</el-breadcrumb-item>-->
+						<!--</el-breadcrumb>-->
+					<!--</el-col>-->
 					<el-col :span="24" class="content-wrapper">
 						<transition name="fade" mode="out-in">
 							<router-view></router-view>
@@ -72,12 +73,13 @@
 </template>
 
 <script>
-	export default {
+  import { mapGetters } from 'vuex'
+
+  export default {
 		data() {
 			return {
 				sysName:'新纪元',
 				collapsed:false,
-				sysUserName: '',
 				sysUserAvatar: '',
 				form: {
 					name: '',
@@ -91,6 +93,11 @@
 				}
 			}
 		},
+		computed: {
+      ...mapGetters({
+        sysUserName: 'getUsername'
+      })
+    },
 		methods: {
 			onSubmit() {
 				console.log('submit!');

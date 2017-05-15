@@ -59,7 +59,7 @@ export default {
     });
 
     //获取用户列表（分页）
-    mock.onGet('/api/queryCustomerVisitRecordsAll').reply(config => {
+    mock.onGet('/api/queryCustomerVisitRecords').reply(config => {
       let {page, mobile} = config.params;
       let mockUsers = _Users.filter(user => {
         if (mobile && user.mobile.indexOf(mobile) == -1) return false;
@@ -80,7 +80,7 @@ export default {
     });
 
     // 所有用户列表
-    mock.onGet('/api/queryCustomerAll').reply(config => {
+    mock.onGet('/api/queryCustomer').reply(config => {
       let {page, mobile} = config.params;
       let mockUsers = _Users.filter(user => {
         if (mobile && user.mobile.indexOf(mobile) == -1) return false;
@@ -174,7 +174,7 @@ export default {
 
     // ----new----
     //获取促成列表（分页）
-    mock.onGet('/customer/facilitateList').reply(config => {
+    mock.onGet('/customer/queryCustomerVisitRecordsAll').reply(config => {
       let {page, name} = config.params;
       let mockUsers = _Users.filter(user => {
         if (name && user.name.indexOf(name) == -1) return false;

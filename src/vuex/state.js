@@ -3,6 +3,9 @@ export default {
   admin: {
     loading: false,
     token: '',
+    role: 'CSM',
+    username: 'xjy.kkja',
+    name: ''
   },
 
   // --------回访记录列表--------
@@ -33,6 +36,7 @@ export default {
 
   // --------客户列表--------
   customer: {
+    switchDisable: false,
     // 所有客户，集中展示列表
     allList: {
       page: 1,
@@ -55,6 +59,12 @@ export default {
         //   last_login_time: ''
         // }
       ]
+    },
+    // 当前客服的客户
+    myList: {
+      loading: false,
+      total: 0,
+      data: []
     },
     // 选框中的数据
     selectList: {
@@ -82,23 +92,23 @@ export default {
   },
 
   // --------客服列表--------
-  waiter: {
+  customerService: {
     list: [
-      {
-        id: 1,
-        username: 'xjycf.sa1123',
-        name: '范欢',
-      },
-      {
-        id: 2,
-        username: 'xjycf.98123',
-        name: '朱婷',
-      },
-      {
-        id: 3,
-        username: 'xjycf.98123',
-        name: '双燕',
-      }
+      // {
+      //   id: 1,
+      //   username: 'xjycf.sa1123',
+      //   name: '范欢',
+      // },
+      // {
+      //   id: 2,
+      //   username: 'xjycf.98123',
+      //   name: '朱婷',
+      // },
+      // {
+      //   id: 3,
+      //   username: 'xjycf.98123',
+      //   name: '双燕',
+      // }
     ]
   }
 }
