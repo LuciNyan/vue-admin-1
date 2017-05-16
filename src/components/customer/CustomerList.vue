@@ -6,10 +6,17 @@
           <el-input v-model="filters.mobile" placeholder="手机号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" v-on:click="getUsers">查询</el-button>
+          <el-date-picker
+            v-model="date"
+            type="daterange"
+            align="right"
+            placeholder="选择日期范围"
+            :picker-options="pickerOptions"
+            @change="changeDate">
+          </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
+          <el-button type="primary" v-on:click="getUsers">查询</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -89,6 +96,7 @@
     </el-table>
     <!--工具条-->
     <el-col :span="24" class="toolbar">
+      <el-button type="success" @click="export2Excel" :disabled="false">导出Excel</el-button>
       <el-button type="info" @click="bulkAddSelectList" :disabled="this.select.length===0" v-if="role === 'CSM'">批量添加</el-button>
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
       </el-pagination>
@@ -145,10 +153,43 @@
     },
     data () {
       return {
+        date: '',
         filters: {
           mobile: '',
+          // 搜索时间
+          s_date: '',
+          e_date: '',
+          mode: 'all',
+          page: 1
         },
         select: [],//列表选中列
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
       }
     },
     computed: {
@@ -163,22 +204,33 @@
       ...mapActions({
         addSelectList: 'addSelectList'
       }),
+      // 改变时间选择
+      changeDate (newValue) {
+        const Date = newValue.split(' - ')
+        this.filters.s_date = Date[0]
+        this.filters.e_date = Date[1]
+      },
       //获取用户列表
       getUsers () {
-        let para = {
-          page: 1,
-          mobile: this.filters.mobile,
-          mode: 'all'
-        }
-        this.$store.dispatch('getCustomerList', para)
+        this.$store.dispatch('getCustomerList', this.filters)
       },
       handleCurrentChange (val) {
-        let para = {
-          page: val,
-          mobile: this.filters.mobile,
-          mode: 'all'
-        }
-        this.$store.dispatch('getCustomerList', para)
+        this.filters.page = val
+        this.$store.dispatch('getCustomerList', this.filters)
+      },
+      export2Excel () {
+        require.ensure([], () => {
+          const { export_json_to_excel } = require('../../vendor/Export2Excel');
+          const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间'];
+          const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time'];
+          const list = [{id: 12}, {id: 50}];
+          const data = this.formatJson(filterVal, list);
+          export_json_to_excel(tHeader, data, '列表excel');
+        })
+      },
+      // 整理导出数据
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
       },
       bulkAddSelectList () {
         let ids = this.select.map(item => item.id)
@@ -187,14 +239,10 @@
       selectChange (sels) {
         this.select = sels
       },
+
     },
     created () {
-      let para = {
-        page: 1,
-        mobile: '',
-        mode: 'all'
-      }
-      this.$store.dispatch('getCustomerList', para)
+      this.$store.dispatch('getCustomerList', this.filters)
     }
   }
 </script>
