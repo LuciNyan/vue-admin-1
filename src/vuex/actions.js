@@ -22,7 +22,7 @@ export default {
       let { msg, code, data } = re_data;
       if (code === 200) {
         type = 'success'
-        sessionStorage.setItem('token', JSON.stringify(data.access_token))
+        sessionStorage.setItem('token', JSON.stringify(data.token.access_token))
         context.commit('token', data.access_token)
       }
       // 取消登录loading
