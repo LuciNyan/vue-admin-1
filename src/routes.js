@@ -1,6 +1,6 @@
 import Login from './views/Login.vue'
 import NotFound from './views/404.vue'
-import Home from './views/Home.vue'
+import Home from './views/layout/Home.vue'
 import Main from './views/Main.vue'
 import Table from './views/nav1/Table.vue'
 import Form from './views/nav1/Form.vue'
@@ -9,8 +9,8 @@ import Page5 from './views/nav2/Page5.vue'
 import Page6 from './views/nav3/Page6.vue'
 import echarts from './views/charts/echarts.vue'
 
-import Facilitate from './components/FollowUpList.vue'
-import Customer from './components/customer/CustomerPage.vue'
+import Facilitate from './views/followUp/FollowUpList.vue'
+import Customer from './views/customer/CustomerPage.vue'
 
 let routes = [
   {
