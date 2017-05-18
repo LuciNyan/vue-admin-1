@@ -29,7 +29,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: "http://api.dev",
+        target: "https://api.minibook.cc",
         changeOrigin:true,
         pathRewrite:{
           '^/api':"/api"

@@ -96,7 +96,7 @@
     </el-table>
     <!--工具条-->
     <el-col :span="24" class="toolbar">
-      <el-button type="success" @click="export2Excel" :disabled="false">导出Excel</el-button>
+      <el-button type="success" @click="export2Excel" :disabled="this.filters.s_date===''" :loading="exportLoading">导出Excel</el-button>
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
@@ -143,6 +143,8 @@
 
 <script>
   import { mapGetters, mapActions} from 'vuex'
+  import { getALLCustomerListPage } from '../../api/api';
+
   import VSelectList from './SelectList'
 
   export default {
@@ -157,8 +159,9 @@
           s_date: '',
           e_date: '',
           mode: 'mine',
-          page: 1
+          page: 1,
         },
+        exportLoading: false,
         select: [],//列表选中列
         // 日期选择器
         pickerOptions: {
@@ -217,15 +220,32 @@
         this.filters.page = val
         this.$store.dispatch('getCustomerList', this.filters)
       },
+      // 导出Excel
       export2Excel () {
-        require.ensure([], () => {
-          const { export_json_to_excel } = require('../../vendor/Export2Excel');
-          const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间'];
-          const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time'];
-          const list = [{id: 12}, {id: 50}];
-          const data = this.formatJson(filterVal, list);
-          export_json_to_excel(tHeader, data, '列表excel');
-        })
+        this.$confirm('此操作将导出 ' + this.filters.s_date + '日至 ' + this.filters.e_date + '日注册的用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          this.exportLoading = true
+          this.filters.is_export = true
+          getALLCustomerListPage(this.filters).then(res => {
+            this.filters.is_export = false
+            console.log(res.data)
+            require.ensure([], () => {const { export_json_to_excel } = require('../../vendor/Export2Excel')
+              const tHeader = ['ID', '用户名', '手机号', '姓名', '来源', '上次登录', '余额', '冻结', '待收', '邀请人', '开户地', '注册时间', '归属']
+              const filterVal = ['id', 'username', 'mobile', 'name', 'source', 'last_login_time', 'balance', 'frozen', 'total_received', 'inviter', 'open_area', 'register_time', 'belong']
+              const list = res.data
+              const data = this.formatJson(filterVal, list)
+              const excelName = new Date()
+              export_json_to_excel(tHeader, data, '我的用户Excel 导出日期:' + excelName.toLocaleDateString())
+              this.exportLoading = false
+            })
+          }).catch(err => {
+            this.exportLoading = false
+            this.$message.error(err);
+          })
+        }).catch(err => {console.log(err)})
       },
       // 整理导出数据
       formatJson(filterVal, jsonData) {
