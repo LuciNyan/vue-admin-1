@@ -231,14 +231,14 @@
           this.filters.is_export = true
           getALLCustomerListPage(this.filters).then(res => {
             this.filters.is_export = false
-            console.log(res.data)
-            require.ensure([], () => {const { export_json_to_excel } = require('../../vendor/Export2Excel')
+            require.ensure([], () => {
+              const { export_json_to_excel } = require('../../vendor/Export2Excel')
               const tHeader = ['ID', '用户名', '手机号', '姓名', '来源', '上次登录', '余额', '冻结', '待收', '邀请人', '开户地', '注册时间', '归属']
               const filterVal = ['id', 'username', 'mobile', 'name', 'source', 'last_login_time', 'balance', 'frozen', 'total_received', 'inviter', 'open_area', 'register_time', 'belong']
               const list = res.data
               const data = this.formatJson(filterVal, list)
               const excelName = new Date()
-              export_json_to_excel(tHeader, data, '我的用户Excel 导出日期:' + excelName.toLocaleDateString())
+              export_json_to_excel(tHeader, data, this.$store.getters.getName + '的个人用户Excel 导出日期:' + excelName.toLocaleDateString())
               this.exportLoading = false
             })
           }).catch(err => {

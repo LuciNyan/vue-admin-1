@@ -12,6 +12,9 @@ export default {
   getUsername (state) {
     return state.admin.username
   },
+  getName (state) {
+    return state.admin.name
+  },
 
 
   // --------回访--------
