@@ -14,25 +14,22 @@
     </el-form>
   </el-col>
   <el-table :data="users" style="width: 100%" stripe v-loading="listLoading">
-    <el-table-column type="selection" width="45">
-    </el-table-column>
+    <!--<el-table-column type="selection" width="45">-->
+    <!--</el-table-column>-->
     <el-table-column type="expand">
       <template scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="编号">
             <span>{{ props.row.id }}</span>
           </el-form-item>
-          <el-form-item label="用户名" min-width="500" >
-            <span>{{ props.row.username }}</span>
-          </el-form-item>
-          <el-form-item label="手机号" min-width="500" >
-            <span>{{ props.row.mobile }}</span>
-          </el-form-item>
           <el-form-item label="姓名" >
             <span>{{ props.row.name }}</span>
           </el-form-item>
-          <el-form-item label="邀请人">
-            <span>{{ props.row.inviter }}</span>
+          <el-form-item label="用户名" min-width="500" >
+            <span>{{ props.row.username }}</span>
+          </el-form-item>
+          <el-form-item label="手机" min-width="500" >
+            <span>{{ props.row.mobile }}</span>
           </el-form-item>
           <el-form-item label="注册日期">
             <span>{{ props.row.reg_date }}</span>
@@ -40,39 +37,54 @@
           <el-form-item label="余额">
             <span>{{ props.row.balance }}</span>
           </el-form-item>
-          <el-form-item label="投资金额">
-            <span>{{ props.row.invest_money }}</span>
+          <el-form-item label="邀请人">
+            <span>{{ props.row.inviter }}</span>
           </el-form-item>
-          <el-form-item label="投资日期">
-            <span>{{ props.row.invest_date }}</span>
-          </el-form-item>
-          <el-form-item label="期限">
-            <span>{{ props.row.deadline }}</span>
+          <el-form-item label="QQ号">
+            <span>{{ props.row.qq }}</span>
           </el-form-item>
           <el-form-item label="标的名称">
             <span>{{ props.row.loan_name }}</span>
           </el-form-item>
-          <el-form-item label="回访日期">
-            <span>{{ props.row.follow_up_date }}</span>
+          <el-form-item label="微信号">
+            <span>{{ props.row.wx }}</span>
           </el-form-item>
-          <el-form-item label="归属">
-            <span>{{ props.row.belong }}</span>
+          <el-form-item label="投资日期">
+            <span>{{ props.row.invest_date }}</span>
           </el-form-item>
           <el-form-item label="通话时长">
             <span>{{ props.row.call_duration }}</span>
           </el-form-item>
+          <el-form-item label="投资金额">
+            <span>{{ props.row.invest_money }}</span>
+          </el-form-item>
+          <el-form-item label="回访日期">
+            <span>{{ props.row.follow_up_date }}</span>
+          </el-form-item>
+          <el-form-item label="投标期限">
+            <span>{{ props.row.deadline }}</span>
+          </el-form-item>
+          <el-form-item label="归属">
+            <span>{{ props.row.belong }}</span>
+          </el-form-item>
         </el-form>
       </template>
     </el-table-column>
-    <el-table-column label="用户名" prop="username" min-width="120">
+    <el-table-column label="用户名" prop="username" min-width="100">
     </el-table-column>
-    <el-table-column label="手机号" prop="mobile" min-width="150">
+    <el-table-column label="手机号" prop="mobile" min-width="110">
     </el-table-column>
-    <el-table-column label="姓名" prop="name" min-width="100">
+    <el-table-column label="姓名" prop="name" min-width="80">
     </el-table-column>
-    <el-table-column label="回访日期" prop="followUpDate" sortable width="150">
+    <el-table-column label="QQ号" prop="qq" min-width="100">
     </el-table-column>
-    <el-table-column label="回访记录" width="180">
+    <el-table-column label="微信" prop="wx" min-width="100">
+    </el-table-column>
+    <el-table-column label="回访日期" prop="follow_up_date" width="120">
+    </el-table-column>
+    <el-table-column label="通话时长" prop="call_duration" width="100">
+    </el-table-column>
+    <el-table-column label="回访记录" width="100">
       <template scope="scope">
         <el-popover trigger="click" placement="top" width="300">
           <div >回访记录：{{ scope.row.follow_up_content }}</div>
@@ -82,12 +94,12 @@
         </el-popover>
       </template>
     </el-table-column>
-    <el-table-column label="操作" width="150">
-      <template scope="scope">
-        <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
+    <!--<el-table-column label="操作" width="150">-->
+      <!--<template scope="scope">-->
+        <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+        <!--<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
+      <!--</template>-->
+    <!--</el-table-column>-->
   </el-table>
     <!--工具条-->
     <el-col :span="24" class="toolbar">
@@ -140,6 +152,8 @@
           mode: 'mine'
         }
         this.$store.dispatch('getFacilitateList', para)
+        console.log(this.users)
+
       },
       handleCurrentChange(val) {
         let para = {

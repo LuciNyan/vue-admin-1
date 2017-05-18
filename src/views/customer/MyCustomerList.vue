@@ -316,9 +316,19 @@
       },
       // 提交回访列表
       updateFollowUpList () {
-        console.log(this.dialogForm.form)
         createCustomerVisitRecords(this.dialogForm.form).then(res => {
-          console.log(res)
+          if (res.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: '回访记录添加成功',
+              type: 'success'
+            })
+          } else {
+            this.$notify.error({
+              title: '警告',
+              message: '添加回访记录失败，' + res.msg,
+            })
+          }
         })
         this.dialogForm.visible = false
         this.dialogForm.form = {customer_user_id: '', qq: '', wx: '', call_duration: '', follow_up_content: ''}
