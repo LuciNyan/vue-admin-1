@@ -67,6 +67,12 @@
             <el-form-item label="归属">
               <span>{{ props.row.belong }}</span>
             </el-form-item>
+            <el-form-item label="最近投标时间">
+              <span>{{ props.row.last_invest_time }}</span>
+            </el-form-item>
+            <el-form-item label="最近投标金额">
+              <span>{{ props.row.last_invest_money }}</span>
+            </el-form-item>
             <el-form-item label="上次登录">
               <span>{{ props.row.last_login_time }}</span>
             </el-form-item>
@@ -235,12 +241,12 @@
             this.filters.is_export = false
             require.ensure([], () => {
               const { export_json_to_excel } = require('../../vendor/Export2Excel')
-              const tHeader = ['ID', '用户名', '手机号', '姓名', '来源', '上次登录', '余额', '冻结', '待收', '邀请人', '开户地', '注册时间', '归属']
-              const filterVal = ['id', 'username', 'mobile', 'name', 'source', 'last_login_time', 'balance', 'frozen', 'total_received', 'inviter', 'open_area', 'register_time', 'belong']
+              const tHeader = ['ID', '用户名', '手机号', '姓名', '来源', '上次登录', '余额', '冻结', '待收', '邀请人', '开户地', '注册时间', '最近投标时间', '最近投标金额', '归属']
+              const filterVal = ['id', 'username', 'mobile', 'name', 'source', 'last_login_time', 'balance', 'frozen', 'total_received', 'inviter', 'open_area', 'register_time', 'last_invest_time', 'last_invest_money', 'belong']
               const list = res.data
               const data = this.formatJson(filterVal, list)
               const excelName = new Date()
-              export_json_to_excel(tHeader, data, this.$store.getters.getName + '所有用户Excel  导出日期:' + excelName.toLocaleDateString())
+              export_json_to_excel(tHeader, data, this.$store.getters.getName + ' 的所有用户Excel  导出日期:' + excelName.toLocaleDateString())
               this.exportLoading = false
             })
           }).catch(err => {

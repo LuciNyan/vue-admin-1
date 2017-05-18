@@ -24,7 +24,6 @@
       :data="users"
       style="width: 100%"
       stripe v-loading="listLoading"
-      @selection-change="selectChange"
       element-loading-text="拼命加载中">
       <!--<el-table-column type="selection" width="45">-->
       <!--</el-table-column>-->
@@ -67,10 +66,18 @@
             <el-form-item label="归属">
               <span>{{ props.row.belong }}</span>
             </el-form-item>
+            <el-form-item label="最近投标时间">
+              <span>{{ props.row.last_invest_time }}</span>
+            </el-form-item>
+            <el-form-item label="最近投标金额">
+              <span>{{ props.row.last_invest_money }}</span>
+            </el-form-item>
             <el-form-item label="上次登录">
               <span>{{ props.row.last_login_time }}</span>
             </el-form-item>
-
+            <el-form-item label="回访次数">
+              <span>{{ props.row.follow_up_frequency }}</span>
+            </el-form-item>
           </el-form>
         </template>
       </el-table-column>
@@ -86,13 +93,13 @@
       </el-table-column>
       <el-table-column label="注册时间" prop="register_time" width="150">
       </el-table-column>
-      <el-table-column label="归属" prop="belong" width="100">
+      <el-table-column label="回访次数" prop="follow_up_frequency" width="100">
       </el-table-column>
-        <!--<el-table-column label="操作" width="100" v-if="role === 'CSM'">-->
-          <!--<template scope="scope">-->
-            <!--<el-button size="small" @click="addSelectList(scope.row.id)" :plain="true" type="info">添加</el-button>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
+        <el-table-column label="回访记录" width="100">
+          <template scope="scope">
+            <el-button size="small" @click="popFollowUpList(scope.row)" :plain="true" type="success">录入</el-button>
+          </template>
+        </el-table-column>
     </el-table>
     <!--工具条-->
     <el-col :span="24" class="toolbar">
@@ -100,6 +107,39 @@
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
+
+    <!--弹出框-->
+    <el-dialog title="录入回访记录" v-model="dialogForm.visible">
+      <el-form :model="dialogForm.form">
+        <el-form-item label="手机号" :label-width="dialogForm.labelWidth">
+          <el-input v-model="dialogForm.mobile" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="真实姓名" :label-width="dialogForm.labelWidth">
+          <el-input v-model="dialogForm.name" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="QQ" :label-width="dialogForm.labelWidth">
+          <el-input v-model="dialogForm.form.qq" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="微信" :label-width="dialogForm.labelWidth">
+          <el-input v-model="dialogForm.form.wx" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="通话时长" :label-width="dialogForm.labelWidth">
+          <el-input v-model="dialogForm.form.call_duration" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="通话内容" :label-width="dialogForm.labelWidth">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4}"
+            placeholder="请输入内容"
+            v-model="dialogForm.form.follow_up_content">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogForm.visible = false">取 消</el-button>
+        <el-button type="primary" @click="updateFollowUpList()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -143,7 +183,7 @@
 
 <script>
   import { mapGetters, mapActions} from 'vuex'
-  import { getALLCustomerListPage } from '../../api/api';
+  import { getALLCustomerListPage, createCustomerVisitRecords } from '../../api/api';
 
   import VSelectList from './SelectList'
 
@@ -153,6 +193,7 @@
     },
     data () {
       return {
+        // 搜索，查询相关
         filters: {
           mobile: '',
           // 搜索时间
@@ -162,7 +203,6 @@
           page: 1,
         },
         exportLoading: false,
-        select: [],//列表选中列
         // 日期选择器
         pickerOptions: {
           shortcuts: [{
@@ -191,6 +231,20 @@
             }
           }]
         },
+        // 录入回访记录弹出框
+        dialogForm: {
+          visible: false,
+          form: {
+            customer_user_id: '',
+            qq: '',
+            wx: '',
+            call_duration: '',
+            follow_up_content: '',
+          },
+          mobile: '',
+          name: '',
+          labelWidth: '120px',
+        },
         date: ''
       }
     },
@@ -212,10 +266,11 @@
         this.filters.s_date = Date[0]
         this.filters.e_date = Date[1]
       },
-      //获取用户列表
+      // 获取用户列表
       getUsers () {
         this.$store.dispatch('getCustomerList', this.filters)
       },
+      // 翻页
       handleCurrentChange (val) {
         this.filters.page = val
         this.$store.dispatch('getCustomerList', this.filters)
@@ -233,12 +288,12 @@
             this.filters.is_export = false
             require.ensure([], () => {
               const { export_json_to_excel } = require('../../vendor/Export2Excel')
-              const tHeader = ['ID', '用户名', '手机号', '姓名', '来源', '上次登录', '余额', '冻结', '待收', '邀请人', '开户地', '注册时间', '归属']
-              const filterVal = ['id', 'username', 'mobile', 'name', 'source', 'last_login_time', 'balance', 'frozen', 'total_received', 'inviter', 'open_area', 'register_time', 'belong']
+              const tHeader = ['ID', '用户名', '手机号', '姓名', '来源', '上次登录', '余额', '冻结', '待收', '邀请人', '开户地', '注册时间', '最近投标时间', '最近投标金额', '归属', '回访次数']
+              const filterVal = ['id', 'username', 'mobile', 'name', 'source', 'last_login_time', 'balance', 'frozen', 'total_received', 'inviter', 'open_area', 'register_time', 'last_invest_time', 'last_invest_money', 'belong', 'follow_up_frequency']
               const list = res.data
               const data = this.formatJson(filterVal, list)
               const excelName = new Date()
-              export_json_to_excel(tHeader, data, this.$store.getters.getName + '的个人用户Excel 导出日期:' + excelName.toLocaleDateString())
+              export_json_to_excel(tHeader, data, this.$store.getters.getName + ' 的个人用户Excel 导出日期:' + excelName.toLocaleDateString())
               this.exportLoading = false
             })
           }).catch(err => {
@@ -251,8 +306,22 @@
       formatJson(filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
       },
-      selectChange (sels) {
-        this.select = sels
+      // 录入回访记录
+      popFollowUpList (user) {
+        this.dialogForm.form.customer_user_id = user.id
+        this.dialogForm.name = user.name
+        this.dialogForm.mobile = user.mobile
+        // 显示弹出层
+        this.dialogForm.visible = true
+      },
+      // 提交回访列表
+      updateFollowUpList () {
+        console.log(this.dialogForm.form)
+        createCustomerVisitRecords(this.dialogForm.form).then(res => {
+          console.log(res)
+        })
+        this.dialogForm.visible = false
+        this.dialogForm.form = {customer_user_id: '', qq: '', wx: '', call_duration: '', follow_up_content: ''}
       },
     },
     created () {

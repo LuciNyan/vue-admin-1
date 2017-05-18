@@ -74,7 +74,7 @@
     </el-table-column>
     <el-table-column label="回访记录" width="180">
       <template scope="scope">
-        <el-popover trigger="focus" placement="top" width="300">
+        <el-popover trigger="click" placement="top" width="300">
           <div >回访记录：{{ scope.row.follow_up_content }}</div>
           <div slot="reference" class="name-wrapper">
             <el-tag>查看记录</el-tag>
@@ -136,20 +136,27 @@
       getUsers () {
         let para = {
           page: 1,
-          mobile: this.filters.mobile
+          mobile: this.filters.mobile,
+          mode: 'mine'
         }
         this.$store.dispatch('getFacilitateList', para)
       },
       handleCurrentChange(val) {
         let para = {
           page: val,
-          mobile: this.filters.mobile
+          mobile: this.filters.mobile,
+          mode: 'mine'
         }
         this.$store.dispatch('getFacilitateList', para)
       },
     },
     created () {
-      this.$store.dispatch('getFacilitateList')
+      let para = {
+        page: 1,
+        mobile: '',
+        mode: 'mine'
+      }
+      this.$store.dispatch('getFacilitateList', para)
     }
   }
 </script>

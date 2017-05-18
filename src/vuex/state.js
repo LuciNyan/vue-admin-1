@@ -56,7 +56,9 @@ export default {
         //   total_received: '',
         //   register_time: '',
         //   belong: '',
-        //   last_login_time: ''
+        //   last_login_time: '',
+        //   last_invest_time: '',
+        //   last_invest_money: '',
         // }
       ]
     },
@@ -85,6 +87,8 @@ export default {
         //   total_received: '',
         //   register_time: '',
         //   belong: '',
+        // last_invest_time: '',
+        // last_invest_money: '',
         //   last_login_time: ''
         // }
       ],
