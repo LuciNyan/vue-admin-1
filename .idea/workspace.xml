@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="20472924-2b52-4969-a208-4fb302b4d2cd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/index.js" afterPath="$PROJECT_DIR$/config/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/customer/CustomerList.vue" afterPath="$PROJECT_DIR$/src/components/customer/CustomerList.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/customer/MyCustomerList.vue" afterPath="$PROJECT_DIR$/src/components/customer/MyCustomerList.vue" />
     </list>
@@ -23,13 +21,13 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CustomerList.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CustomerList.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/customer/CustomerList.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3723">
-              <caret line="242" column="67" lean-forward="false" selection-start-line="242" selection-start-column="67" selection-end-line="242" selection-end-column="67" />
+            <state relative-caret-position="135">
+              <caret line="86" column="56" lean-forward="false" selection-start-line="86" selection-start-column="56" selection-end-line="86" selection-end-column="56" />
               <folding>
-                <element signature="e#5013#5057#0" expanded="true" />
+                <element signature="e#5004#5048#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -39,7 +37,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/customer/SelectList.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="411">
-              <caret line="102" column="120" lean-forward="false" selection-start-line="102" selection-start-column="111" selection-end-line="102" selection-end-column="120" />
+              <caret line="102" column="6" lean-forward="false" selection-start-line="102" selection-start-column="111" selection-end-line="102" selection-end-column="120" />
               <folding />
             </state>
           </provider>
@@ -48,13 +46,13 @@
       <file leaf-file-name="MyCustomerList.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/customer/MyCustomerList.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="483">
-              <caret line="240" column="66" lean-forward="true" selection-start-line="240" selection-start-column="60" selection-end-line="240" selection-end-column="66" />
+            <state relative-caret-position="227">
+              <caret line="86" column="56" lean-forward="false" selection-start-line="86" selection-start-column="56" selection-end-line="86" selection-end-column="56" />
               <folding>
                 <element signature="n#style#0;n#el-col#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-pagination#0;n#el-col#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#4868#4912#0" expanded="true" />
+                <element signature="e#4859#4903#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -70,7 +68,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="state.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="state.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/vuex/state.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="115">
@@ -192,9 +190,9 @@
         <option value="$PROJECT_DIR$/src/vendor/blob.js" />
         <option value="$PROJECT_DIR$/src/vendor/Export2Excel.js" />
         <option value="$PROJECT_DIR$/config/index.js" />
+        <option value="$PROJECT_DIR$/src/vuex/state.js" />
         <option value="$PROJECT_DIR$/src/components/customer/MyCustomerList.vue" />
         <option value="$PROJECT_DIR$/src/components/customer/CustomerList.vue" />
-        <option value="$PROJECT_DIR$/src/vuex/state.js" />
       </list>
     </option>
   </component>
@@ -514,12 +512,12 @@
       <workItem from="1494549383031" duration="15186000" />
       <workItem from="1494808739842" duration="5766000" />
       <workItem from="1494815701750" duration="20229000" />
-      <workItem from="1494989277921" duration="4895000" />
+      <workItem from="1494989277921" duration="4973000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="147567000" />
+    <option name="totallyTimeSpent" value="147645000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -877,37 +875,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/customer/SelectList.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="102" column="120" lean-forward="false" selection-start-line="102" selection-start-column="111" selection-end-line="102" selection-end-column="120" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/customer/MyCustomerList.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="240" column="66" lean-forward="true" selection-start-line="240" selection-start-column="60" selection-end-line="240" selection-end-column="66" />
-          <folding>
-            <element signature="n#style#0;n#el-col#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-pagination#0;n#el-col#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#4868#4912#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/customer/CustomerList.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3723">
-          <caret line="242" column="67" lean-forward="false" selection-start-line="242" selection-start-column="67" selection-end-line="242" selection-end-column="67" />
-          <folding>
-            <element signature="e#5013#5057#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/vuex/state.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
@@ -916,6 +883,37 @@
             <element signature="e#243#908#0" expanded="false" />
             <element signature="e#1670#2053#0" expanded="false" />
             <element signature="e#2124#2431#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/customer/SelectList.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="102" column="6" lean-forward="false" selection-start-line="102" selection-start-column="111" selection-end-line="102" selection-end-column="120" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/customer/MyCustomerList.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="86" column="56" lean-forward="false" selection-start-line="86" selection-start-column="56" selection-end-line="86" selection-end-column="56" />
+          <folding>
+            <element signature="n#style#0;n#el-col#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-pagination#0;n#el-col#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#4859#4903#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/customer/CustomerList.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="86" column="56" lean-forward="false" selection-start-line="86" selection-start-column="56" selection-end-line="86" selection-end-column="56" />
+          <folding>
+            <element signature="e#5004#5048#0" expanded="true" />
           </folding>
         </state>
       </provider>

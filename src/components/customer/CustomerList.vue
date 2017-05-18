@@ -84,7 +84,7 @@
       </el-table-column>
       <el-table-column label="来源" prop="source" width="80">
       </el-table-column>
-      <el-table-column label="注册时间" prop="register_time" sortable width="150">
+      <el-table-column label="注册时间" prop="register_time" width="150">
       </el-table-column>
       <el-table-column label="归属" prop="belong" width="100">
       </el-table-column>
