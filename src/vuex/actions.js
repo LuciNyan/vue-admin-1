@@ -1,5 +1,5 @@
 import {
-  getUserListPage,
+  getCustomerVisitRecords,
   requestLogin,
   getALLCustomerListPage,
   getAllWaiter,
@@ -54,7 +54,7 @@ export default {
       }
     }
     // 异步
-    getUserListPage(para).then((res) => {
+    getCustomerVisitRecords(para).then((res) => {
       let res_data = res.data
       context.commit('facilitateListTotal', res_data.total)
       context.commit('facilitateList', res_data.data)

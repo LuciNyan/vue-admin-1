@@ -26,7 +26,7 @@
       stripe v-loading="listLoading"
       @selection-change="selectChange"
       element-loading-text="拼命加载中">
-      <el-table-column type="selection" width="45" v-if="role === 'CSM'">
+      <el-table-column type="selection" width="45" v-if="controllable">
       </el-table-column>
       <el-table-column type="expand">
         <template scope="props">
@@ -94,7 +94,7 @@
       </el-table-column>
       <el-table-column label="归属" prop="belong" width="100">
       </el-table-column>
-      <el-table-column label="操作" width="100" v-if="role === 'CSM'">
+      <el-table-column label="操作" width="100" v-if="controllable">
         <template scope="scope">
           <el-button size="small" @click="addSelectList(scope.row.id)" :plain="true" type="info">添加</el-button>
         </template>
@@ -103,11 +103,11 @@
     <!--工具条-->
     <el-col :span="24" class="toolbar">
       <el-button type="success" @click="export2Excel" :disabled="this.filters.s_date===''" :loading="exportLoading">导出Excel</el-button>
-      <el-button type="info" @click="bulkAddSelectList" :disabled="this.select.length===0" v-if="role === 'CSM'">批量添加</el-button>
+      <el-button type="info" @click="bulkAddSelectList" :disabled="this.select.length===0" v-if="controllable">批量添加</el-button>
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
-    <VSelectList v-if="role === 'CSM'"></VSelectList>
+    <VSelectList v-if="controllable"></VSelectList>
   </div>
 </template>
 
@@ -164,7 +164,6 @@
         date: '',
         filters: {
           mobile: '',
-          // 搜索时间
           s_date: '',
           e_date: '',
           mode: 'all',
@@ -208,7 +207,14 @@
         listLoading: 'getAllCustomerListLoading',
         total: 'getAllCustomerListTotal',
         role: 'getRole',
-      })
+      }),
+      controllable: function () {
+        if (this.role === 'CS') {
+          return false
+        } else {
+          return true
+        }
+      }
     },
     methods: {
       ...mapActions({

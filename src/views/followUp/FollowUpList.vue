@@ -6,6 +6,16 @@
         <el-input v-model="filters.mobile" placeholder="手机号"></el-input>
       </el-form-item>
       <el-form-item>
+        <el-date-picker
+          v-model="date"
+          type="daterange"
+          align="right"
+          placeholder="选择日期范围"
+          :picker-options="pickerOptions"
+          @change="changeDate">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" v-on:click="getUsers">查询</el-button>
       </el-form-item>
       <el-form-item>
@@ -103,7 +113,7 @@
   </el-table>
     <!--工具条-->
     <el-col :span="24" class="toolbar">
-      <!--<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>-->
+      <el-button type="success" @click="export2Excel" :disabled="this.filters.s_date===''" :loading="exportLoading">导出Excel</el-button>
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
@@ -127,12 +137,47 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import { getCustomerVisitRecords } from '../../api/api';
 
   export default {
     data () {
       return {
         filters: {
-          mobile: ''
+          mobile: '',
+          s_date: '',
+          e_date: '',
+          mode: 'mine',
+          page: 1,
+          is_export: false
+        },
+        date: '',
+        exportLoading: false,
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
         },
       }
     },
@@ -146,31 +191,52 @@
     methods: {
       //获取用户列表
       getUsers () {
-        let para = {
-          page: 1,
-          mobile: this.filters.mobile,
-          mode: 'mine'
-        }
-        this.$store.dispatch('getFacilitateList', para)
-        console.log(this.users)
-
+        this.$store.dispatch('getFacilitateList', this.filters)
       },
       handleCurrentChange(val) {
-        let para = {
-          page: val,
-          mobile: this.filters.mobile,
-          mode: 'mine'
-        }
-        this.$store.dispatch('getFacilitateList', para)
+        this.filters.page = val
+        this.$store.dispatch('getFacilitateList', this.filters)
+      },
+      // 改变时间选择
+      changeDate (newValue) {
+        const Date = newValue.split(' - ')
+        this.filters.s_date = Date[0]
+        this.filters.e_date = Date[1]
+      },
+      // 导出Excel
+      export2Excel () {
+        this.$confirm('此操作将导出 ' + this.filters.s_date + '日至 ' + this.filters.e_date + '日注册的用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          this.exportLoading = true
+          this.filters.is_export = true
+          getCustomerVisitRecords(this.filters).then(res => {
+            this.filters.is_export = false
+            require.ensure([], () => {
+              const { export_json_to_excel } = require('../../vendor/Export2Excel')
+              const tHeader = ['ID', '用户名', '手机号', '姓名', '注册时间', 'QQ号', '微信号', '余额', '投标名称', '投标时间', '投标金额', '投标期限', '邀请人', '回访日期', '通话时长', '回访内容']
+              const filterVal = ['id', 'username', 'mobile', 'name', 'reg_date', 'qq', 'wx', 'balance', 'loan_name', 'invest_date', 'invest_money', 'deadline', 'inviter', 'follow_up_date', 'call_duration', 'follow_up_content']
+              const list = res.data
+              const data = this.formatJson(filterVal, list)
+              const excelName = new Date()
+              export_json_to_excel(tHeader, data, this.$store.getters.getName + ' 的回访记录Excel  导出日期:' + excelName.toLocaleDateString())
+              this.exportLoading = false
+            })
+          }).catch(err => {
+            this.exportLoading = false
+            this.$message.error(err)
+          })
+        }).catch(err => {console.log(err)})
+      },
+      // 整理导出数据
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
       },
     },
     created () {
-      let para = {
-        page: 1,
-        mobile: '',
-        mode: 'mine'
-      }
-      this.$store.dispatch('getFacilitateList', para)
+      this.$store.dispatch('getFacilitateList', this.filters)
     }
   }
 </script>
