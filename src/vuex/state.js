@@ -3,9 +3,9 @@ export default {
   admin: {
     loading: false,
     token: '',
-    role: 'CSM',
-    username: 'xjy.kkja',
-    name: '范欢'
+    role: 'CS',
+    username: '',
+    name: '',
   },
 
   // --------回访记录列表--------

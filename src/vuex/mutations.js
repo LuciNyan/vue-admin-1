@@ -9,6 +9,11 @@ export default {
   loginMsg (state, msg) {
     state.admin.msg = msg
   },
+  adminInfo (state, info) {
+    state.admin.role = info.role
+    state.admin.username = info.username
+    state.admin.name = info.name
+  },
 
   // --------回访列表--------
   // 更新促成回访记录列表数据

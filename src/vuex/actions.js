@@ -23,7 +23,12 @@ export default {
       if (code === 200) {
         type = 'success'
         sessionStorage.setItem('token', JSON.stringify(data.token.access_token))
-        context.commit('token', data.access_token)
+        context.commit('token', data.token.access_token)
+        context.commit('adminInfo', {
+          username: data.userinfo.username,
+          role: data.userinfo.rolename,
+          name: data.userinfo.name
+        })
       }
       // 取消登录loading
       context.commit('loginLoading', false)
@@ -41,6 +46,11 @@ export default {
   // ----重置msg----
   resetLoginMsg (context) {
     context.commit('loginMsg', '')
+  },
+  // 获取本地存在的操作者信息
+  getAdminInfo (context) {
+    let info = JSON.parse(sessionStorage.getItem('info'))
+
   },
 
   // -----------------------促成与回访记录------------------------
